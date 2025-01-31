@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Carta Animada de San Valentín</title>
+
+  <!-- IMPORTAR FUENTE DESDE GOOGLE FONTS (EJEMPLO) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@600&display=swap" rel="stylesheet" />
+
+  <style>
+    /**********************************************************
+     * RESETEO Y ESTILOS GENERALES
+     **********************************************************/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(45deg, #ffc9de, #ffdff0);
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1200px; /* Para efectos 3D */
+      position: relative;
+    }
+
+    /**********************************************************
+     * CORAZONES FLOTANDO (FONDO DECORATIVO)
+     **********************************************************/
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff4b5c;
+      transform: rotate(45deg);
+      border-radius: 50% 0 50% 0;
+      animation: floatUp 8s linear infinite;
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff4b5c;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 10px;
+      top: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.8;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-200px) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    /* Posición y duración variable (aleatorio) */
+    .heart:nth-child(1) {
+      left: 20%;
+      animation-duration: 6s;
+      animation-delay: 1s;
+    }
+    .heart:nth-child(2) {
+      left: 40%;
+      animation-duration: 7s;
+      animation-delay: 0.5s;
+    }
+    .heart:nth-child(3) {
+      left: 60%;
+      animation-duration: 5.5s;
+      animation-delay: 1.5s;
+    }
+    .heart:nth-child(4) {
+      left: 80%;
+      animation-duration: 8.5s;
+      animation-delay: 2s;
+    }
+    .heart:nth-child(5) {
+      left: 10%;
+      animation-duration: 9s;
+      animation-delay: 3s;
+    }
+    .heart:nth-child(6) {
+      left: 70%;
+      animation-duration: 7.5s;
+      animation-delay: 4s;
+    }
+
+    /**********************************************************
+     * CONFETI (EXTRA)
+     **********************************************************/
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      opacity: 0.8;
+      animation: fall 5s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-200px) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(50vh) rotate(180deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .confetti:nth-child(7) {
+      left: 15%;
+      background-color: #f4e1d2;
+      animation-duration: 4.5s;
+      animation-delay: 1s;
+    }
+    .confetti:nth-child(8) {
+      left: 35%;
+      background-color: #fdd4d4;
+      animation-duration: 6s;
+      animation-delay: 1.5s;
+    }
+    .confetti:nth-child(9) {
+      left: 55%;
+      background-color: #ffe3f1;
+      animation-duration: 4s;
+      animation-delay: 2s;
+    }
+    .confetti:nth-child(10) {
+      left: 75%;
+      background-color: #fff3e4;
+      animation-duration: 5.5s;
+      animation-delay: 2.5s;
+    }
+
+    /**********************************************************
+     * SOBRE 3D (RESPONSIVE)
+     **********************************************************/
+    .envelope-container {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1.5s ease;
+      z-index: 2;
+      cursor: pointer;
+
+      /* Tamaño base mayor (para móviles) */
+      width: 90vw;
+      max-width: 400px;
+      height: calc(0.7 * 90vw);
+      max-height: 280px;
+    }
+
+    @media (min-width: 600px) {
+      /* En pantallas más grandes, se mantiene un tamaño más grande */
+      .envelope-container {
+        width: 400px;
+        height: 280px;
+      }
+    }
+
+    .envelope-container:hover {
+      transform: scale(1.03) rotateY(5deg);
+    }
+
+    /* Estado abierto */
+    .envelope-container.open {
+      transform: scale(1.05) rotateY(15deg);
+    }
+
+    .envelope {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: all 1s ease;
+    }
+
+    /**********************************************************
+     * PARTE DE ATRÁS DEL SOBRE
+     **********************************************************/
+    .envelope-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #ffc0cb;
+      border-radius: 6px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      backface-visibility: hidden;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* Bordes estilo "air mail" */
+    .envelope-back::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: repeating-linear-gradient(
+        45deg,
+        #ff4b5c 0,
+        #ff4b5c 10px,
+        #ffc0cb 10px,
+        #ffc0cb 20px
+      );
+    }
+    .envelope-back::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: repeating-linear-gradient(
+        45deg,
+        #ff4b5c 0,
+        #ff4b5c 10px,
+        #ffc0cb 10px,
+        #ffc0cb 20px
+      );
+    }
+
+    /* Sello decorativo */
+    .stamp {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle at 30% 30%, #ff4b5c, #ffc0cb);
+      border: 2px solid #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transform: rotate(-15deg);
+      animation: stampBounce 3s infinite;
+    }
+
+    @keyframes stampBounce {
+      0%, 100% {
+        transform: rotate(-15deg) translateY(0);
+      }
+      50% {
+        transform: rotate(-15deg) translateY(-5px);
+      }
+    }
+
+    /**********************************************************
+     * PARTE FRONTAL DEL SOBRE (SOLAPA)
+     **********************************************************/
+    .envelope-front {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #ffc0cb;
+      border-radius: 6px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      backface-visibility: hidden;
+      transform-origin: top;
+      z-index: 2;
+      transition: transform 1s ease;
+    }
+
+    /* Iniciales "A.S" antes de abrir */
+    .envelope-front::before {
+      content: "A.S";
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.6rem;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    /**********************************************************
+     * TARJETA (CARTA) INTERIOR
+     **********************************************************/
+    .letter {
+      position: absolute;
+      width: 90%;
+      height: 70%;
+      left: 5%;
+      top: 15%;
+      background: linear-gradient(to bottom right, #ffffff, #ffe2ee);
+      border-radius: 6px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      padding: 1rem;
+      text-align: center;
+      transform: translateY(60%) scale(0.9);
+      opacity: 0;
+      transition: transform 1s ease, opacity 1s ease;
+      z-index: 0;
+    }
+
+    /* Texto interno */
+    .letter h2 {
+      margin-top: 10%;
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem; /* Tamaño grande para mobile */
+      color: #ff4b5c;
+      animation: textFadeIn 2s ease forwards;
+      opacity: 0;
+      line-height: 1.2;
+    }
+
+    .letter p {
+      font-size: 1.1rem;
+      color: #666;
+      margin-top: 0.5rem;
+      animation: textFadeIn 3s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes textFadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Botón opcional */
+    .letter .accept-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.7rem 1.4rem;
+      background-color: #ff4b5c;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transform: scale(0.8);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      opacity: 0;
+      animation: textFadeIn 4s ease forwards;
+    }
+
+    .letter .accept-btn:hover {
+      background-color: #ff2739;
+      transform: scale(1);
+    }
+
+    /**********************************************************
+     * ESTADOS DE APERTURA
+     **********************************************************/
+    .envelope-container.open .envelope-front {
+      transform: rotateX(-170deg);
+    }
+
+    .envelope-container.open .letter {
+      transform: translateY(0%) scale(1);
+      opacity: 1;
+      z-index: 3;
+      transition-delay: 0.2s;
+    }
+
+    /**********************************************************
+     * ANIMACIÓN "BOUNCE" AL ABRIR
+     **********************************************************/
+    .open .envelope {
+      animation: envelopeBounce 0.8s ease;
+    }
+
+    @keyframes envelopeBounce {
+      0% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(5px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    /**********************************************************
+     * TEXTO DE INSTRUCCIONES
+     **********************************************************/
+    .instruction {
+      position: absolute;
+      bottom: 40px;
+      width: 100%;
+      text-align: center;
+      color: #444;
+      font-style: italic;
+      font-size: 1rem;
+      text-shadow: 0 2px 2px rgba(255,255,255,0.4);
+      z-index: 10;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Corazones flotando en el fondo -->
+  <div class="heart"></div>
+  <div class="heart"></div>
+  <div class="heart"></div>
+  <div class="heart"></div>
+  <div class="heart"></div>
+  <div class="heart"></div>
+
+  <!-- Confeti adicional -->
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+
+  <!-- CONTENEDOR PRINCIPAL (SOBRE) -->
+  <div class="envelope-container" onclick="toggleOpen()">
+    <div class="envelope">
+      <!-- Parte de atrás del sobre -->
+      <div class="envelope-back">
+        <!-- Sello decorativo -->
+        <div class="stamp"></div>
+      </div>
+
+      <!-- Parte frontal del sobre (solapa) -->
+      <div class="envelope-front"></div>
+
+      <!-- CARTA INTERIOR -->
+      <div class="letter">
+        <h2>Amor, ¡¿Quieres ser mi San Valentín?!</h2>
+        <p>Eres lo más especial en mi vida. ¡Te quiero!</p>
+        <button class="accept-btn">¡Claro que sí!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Texto de instrucción -->
+  <div class="instruction">
+    Haz clic en el sobre para abrir o cerrar la carta
+  </div>
+
+  <script>
+    const envelopeContainer = document.querySelector('.envelope-container');
+
+    function toggleOpen() {
+      envelopeContainer.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
